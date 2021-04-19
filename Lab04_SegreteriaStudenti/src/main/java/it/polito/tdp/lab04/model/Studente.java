@@ -38,14 +38,14 @@ public class Studente {
 	public void setCds(String cds) {
 		this.cds = cds;
 	}
+	
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cds == null) ? 0 : cds.hashCode());
-		result = prime * result + ((cognome == null) ? 0 : cognome.hashCode());
 		result = prime * result + matricola;
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		return result;
 	}
 	@Override
@@ -57,22 +57,7 @@ public class Studente {
 		if (getClass() != obj.getClass())
 			return false;
 		Studente other = (Studente) obj;
-		if (cds == null) {
-			if (other.cds != null)
-				return false;
-		} else if (!cds.equals(other.cds))
-			return false;
-		if (cognome == null) {
-			if (other.cognome != null)
-				return false;
-		} else if (!cognome.equals(other.cognome))
-			return false;
 		if (matricola != other.matricola)
-			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
 			return false;
 		return true;
 	}

@@ -15,7 +15,7 @@ public class CorsoDAO {
 	/*
 	 * Ottengo tutti i corsi salvati nel Db
 	 */
-	public List<Corso> getTuttiICorsi() {
+	public static List<Corso> getTuttiICorsi() {
 
 		final String sql = "SELECT * FROM corso";
 
@@ -61,7 +61,7 @@ public class CorsoDAO {
 	public void getCorso(Corso corso) {
 		// TODO
 		
-		String sql = "SELECT c.nome "
+		String sql = "SELECT c.codins, c.nome, c.crediti, c.pd"
 				+ "FROM corso "
 				+ "WHERE c.codins = ?";
 		
@@ -86,7 +86,8 @@ public class CorsoDAO {
 			}
 
 			conn.close();
-			
+			rs.close();
+			st.close();
 			
 		} catch (SQLException e) {
 			// e.printStackTrace();
@@ -123,6 +124,30 @@ public class CorsoDAO {
 						
 		}
 	
+	public List <Studente> studentiIscritti (Corso corso){
+		String sql ="SELECT s.matricola, s.nome, s.cognome, s.cds "
+				+ "FROM studente s, iscrizione i "
+				+ "WHERE s.matricola = i.matricola AND i.codins=?";
+		List <Studente> result = new LinkedList <Studente>();
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, corso.getCodins());
+			ResultSet rs = st.executeQuery();
+			while(rs.next()){
+				Studente s = new Studente( rs.getString("nome"), rs.getString("cognome"),rs.getInt("matricola"), rs.getString("CDS"));
+				result.add(s);
+			}
+			conn.close();
+			rs.close();
+			st.close();
+			
+		}catch (SQLException ee) {
+			throw new RuntimeException(ee);
+		}
+		return result;
+	}
+	
 
 		 // dal dao prendo i dati dal db
 		public boolean esisteCorso(Corso corso) {
@@ -157,7 +182,9 @@ public class CorsoDAO {
 		
 		}
 
-
+	
+		
+		
 	/*
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
 	 */
